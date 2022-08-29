@@ -111,7 +111,7 @@ function syzdawane_na_dyska(masiv) {
             dyska+= `<button class="button" id="${id}" onclick=" tuk('${id}')"> </button>`;
               
         }
-        dyska +="|<br>"
+        dyska +="<br>"
         document.getElementById('div0').innerHTML=dyska
     }
 }
