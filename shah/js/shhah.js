@@ -112,6 +112,6 @@ function syzdawane_na_dyska(masiv) {
               
         }
         dyska +="<br>"
-        document.getElementById('div0').innerHTML=dyska
+        document.getElementById('div0').innerHTML=dyska;
     }
 }
