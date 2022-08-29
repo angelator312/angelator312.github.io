@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<canvas onclick="on()" id="myCanvas" width="200" height="100" style="border:1px solid #d3d3d3;">
+Your browser does not support the HTML canvas tag.</canvas>
+
+<script>
+var c = document.getElementById("myCanvas");
+var ctx = c.getContext("2d");
+let a1=40;
+ctx.moveTo(0,0);
+ctx.lineTo(200,100);
+ctx.stroke();
+function on() {
+    ctx.beginPath();
+ctx.arc(95,50,a1,0,2*Math.PI);
+ctx.stroke();
+a1+=5
+}
+</script>
+
+</body>
+</html>
