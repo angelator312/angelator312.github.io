@@ -109,7 +109,7 @@ function syzdawane_na_dyska(masiv) {
         for (let ii in masiv[i]) {
             let id= `${ii}${i}`;
             dyska+= `|<button class="button" id="${id}" onclick=" tuk('${id}')"> </button >`;
-             
+              
         }
         dyska +="|<br>"
         document.getElementById('div0').innerHTML=dyska
