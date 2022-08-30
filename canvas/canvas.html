@@ -2,23 +2,39 @@
 <html>
 <body>
 
-<canvas onclick="on()" id="myCanvas" width="200" height="100" style="border:1px solid #d3d3d3;">
+<canvas onclick="on()" ondblclick="n(b*4)" id="myCanvas" width="200" height="100" style="border:1px solid #d3d3d3;">
 Your browser does not support the HTML canvas tag.</canvas>
 
 <script>
 var c = document.getElementById("myCanvas");
 var ctx = c.getContext("2d");
-let a1=40;
+let b=12;
+let a=[]
+a[0]=40;
+a[1]=50;
+a[2]=95;
+a[3]=0;
 ctx.moveTo(0,0);
-ctx.lineTo(200,100);
+ctx.lineTo(212,100);
 ctx.stroke();
+function n(s) {
+    for(let i=0;i<s;i++){on()}
+b+=5
+} 
 function on() {
     ctx.beginPath();
-ctx.arc(95,50,a1,0,2*Math.PI);
-ctx.stroke();
-a1+=5
+    ctx.arc(a[2],a[1],a[0],a[3],2*Math.PI);
+    ctx.stroke();
+    ctx.moveTo(a[3],a[3]);
+    ctx.lineTo(a[0]+a[2],a[1]+a[0]);
+    ctx.stroke();
+    a[1]+=5;
 }
-</script>
 
+</script>
+<button onclick="a[0]+=5">+5</button>
+<button onclick="a[1]-=5">-5</button>
+<button onclick="a[2]+=5">+5</button>
+<button onclick="a[3]+=5">+5</button>
 </body>
 </html>
