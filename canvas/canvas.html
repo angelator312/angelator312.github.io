@@ -1,40 +1,94 @@
 <!DOCTYPE html>
 <html>
 <body>
+<div>
+    <button onclick="a=1">moliv</button>
+    <button onclick="a=2">line</button>
+    <button onclick="a=3">restangle</button>
+    <button onclick="a=4">circle</button>
+    <input maxlength="3" value="40" type="number" onchange="i=
+    parseInt(document.getElementsByTagName('input').item(0).value)">
+</div>
 
-<canvas onclick="on()" ondblclick="n(b*4)" id="myCanvas" width="200" height="100" style="border:1px solid #d3d3d3;">
+<canvas  id="myCanvas" width="100" height="100" style="border:1px solid #d3d3d3;">
 Your browser does not support the HTML canvas tag.</canvas>
 
 <script>
+let i=parseInt(document.getElementsByTagName("input").item(0).value);
+console.log(i);
 var c = document.getElementById("myCanvas");
 var ctx = c.getContext("2d");
-let b=12;
-let a=[]
-a[0]=40;
-a[1]=50;
-a[2]=95;
-a[3]=0;
-ctx.moveTo(0,0);
-ctx.lineTo(212,100);
-ctx.stroke();
-function n(s) {
-    for(let i=0;i<s;i++){on()}
-b+=5
-} 
-function on() {
-    ctx.beginPath();
-    ctx.arc(a[2],a[1],a[0],a[3],2*Math.PI);
+let x=800
+let y=600
+let a=1
+let b=0
+function moliv(event) {
+    ctx.lineTo(event.offsetX,event.offsetY);
     ctx.stroke();
-    ctx.moveTo(a[3],a[3]);
-    ctx.lineTo(a[0]+a[2],a[1]+a[0]);
-    ctx.stroke();
-    a[1]+=5;
 }
+function line(event) {
+    ctx.lineTo(event.offsetX,event.offsetY);
+    ctx.stroke();
+}
+function circle(event) {
+    
+    ctx.beginPath();
+    ctx.arc(event.offsetX,event.offsetY,i,0,2*Math.PI);
+    ctx.stroke();
+}
+function restangle(event,x1,y1,x2,y2) {
+    ctx.beginPath()
+    if (x1<x2&& y1<y2) {
+        ctx.rect(x1, y1, Math.abs(x1-x2), Math.abs(y1-y2));
+        
+    }else if(x1>x2&& y1>y2){
+        ctx.rect(x2, y2, Math.abs(x1-x2), Math.abs(y1-y2));
+    } else if(x1<x2&& y1>y2){
+        ctx.rect(x1, y2, Math.abs(x2-x1), Math.abs(y1-y2));
+    }else if(x2<x1&& y1<y2){
+        ctx.rect(x2, y1, Math.abs(x1-x2), Math.abs(y2-y1));
+    }
+    
+    ctx.stroke();
+}
+let y1,x1;
+function mousemove(event) {
+    let bu=event.buttons
+    
+    if (b==0&&bu==1) {
+        ctx.moveTo(event.offsetX,event.offsetY)
+        if (a==3) {
+            y1=event.offsetY
+            x1=event.offsetX
+            
+        }
+    }
+    if (bu==1) {
+        // console.log(event.offsetX,event.offsetY,event.buttons);
+          
+        if(a==1){
+            
+            moliv(event)
+        }
+       
+    }
+    if (a==2 && bu==0&&b==1) {
+            line(event)
+        }
+    if (a==4 && bu==0&&b==1) {
+            circle(event)
+    }
+    if (a==3 && bu==0&&b==1) {
+        console.log("1");
+        restangle(event,x1,y1,event.offsetX,event.offsetY)
+    }
+    b=event.buttons
+}
+c.width=x;
+c.height=y
 
+c.onmousemove=mousemove
 </script>
-<button onclick="a[0]+=5">+5</button>
-<button onclick="a[1]-=5">-5</button>
-<button onclick="a[2]+=5">+5</button>
-<button onclick="a[3]+=5">+5</button>
+
 </body>
 </html>
