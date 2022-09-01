@@ -4,7 +4,7 @@
 <div>
     <button onclick="a=1">moliv</button>
     <button onclick="a=2">line</button>
-    <button onclick="a=3">restangle</button>
+    <button onclick="a=3">rectangle</button>
     <button onclick="a=4">circle</button>
     <input maxlength="3" value="40" type="number" onchange="i=
     parseInt(document.getElementsByTagName('input').item(0).value)">
@@ -84,7 +84,7 @@ function mousemove(event) {
     }
     if (a==3 && bu==0&&b==1) {
         console.log("1");
-        restangle(event,x1,y1,event.offsetX,event.offsetY)
+        rectangle(event,x1,y1,event.offsetX,event.offsetY)
     }
     b=event.buttons
 }
