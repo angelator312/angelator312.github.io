@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html>
+  <style>
+    canvas{border: 1px solid rgb(0, 0, 0);background-color: rgb(0, 0, 0); }
+
+  </style>
+    <canvas width="800" height="600"></canvas>
+<script>
+var c=document.getElementsByTagName("canvas").item(0);
+var ctx=c.getContext("2d")
+// console.log((25500/8000)/100);
+function random(kray,minimum=0) {
+    return parseInt(Math.floor(Math.random() *kray+minimum))
+}
+function makeSprite() {
+  let text=''
+  let len=random(16,5)
+  for (let i = 0; i < len; i++) {
+    text+=String.fromCharCode(random(126,33))
+  }
+     return{
+      x: random(c.width), 
+      y: 16, // animira se от 0 до height
+      text: text , // случайни цифри и букви
+      velocity:random(10,3),
+      textSize:16
+    } 
+  }
+let a=[]
+ctx.fillStyle="#00bb00";
+function drawsprite(ctx,sprite) {
+  ctx.font = `${a[sprite].textSize}px Arial`;
+  let coeficent=1/a[sprite].text.length
+  for (const item in a[sprite].text) {
+    let gren=Math.floor((1+parseInt(item))*coeficent*255)
+    ctx.fillStyle=`#00${gren.toString(16)}00`;
+    ctx.fillText(a[sprite].text[item],a[sprite].x,a[sprite].y+item*a[sprite].textSize)
+    
+    
+  }
+}
+function plus(sprite) {
+  if (a[sprite].y>=c.height) {
+    a[sprite]=makeSprite()
+  } else {
+    a[sprite].y+=a[sprite].velocity
+    
+  }
+  
+}
+for (let i = 0; i < 1; i++) {
+    a.push(makeSprite())
+  }
+function anims() {
+  ctx.clearRect(0,0,c.width,c.height)
+  for (let i in a) {
+    drawsprite(ctx,i)
+    plus(i)
+    
+  }
+  
+}
+
+setInterval(anims,50)
+</script>
+</html>
