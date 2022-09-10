@@ -29,12 +29,13 @@
         this.load.image('sky', 'assets/sky.png');
         this.load.image('ground', 'assets/platform.png');
         this.load.image('star', 'assets/star.png');
-        this.load.image('bomb', 'assets/bomb.png');
+        this.load.image('bomb', 'assets/tomato2.png');
         this.load.spritesheet('dude', 'assets/dude.png', { frameWidth: 32, frameHeight: 48 });
     }
 
      create ()
     {
+        this.score=0
         this.add.image(400, 300, 'sky');
 
         this.platforms = this.physics.add.staticGroup();
@@ -73,7 +74,7 @@
             repeat: -1
         });
  
-        this.cursors = this.input.keyboard.createCursorKeys();
+        this.scoreText = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
         let { width, height } = this.sys.game.canvas;
         
         this.physics.add.collider(this.player1, this.platforms);
@@ -166,7 +167,7 @@ update ()
         }*/
         if (this.vid!=STOP) {
         if (this.broy==0) {
-            this.broy=Phaser.Math.Between(60,320)
+            this.broy=Phaser.Math.Between(60,250)
             let vid=this.vid;
             this.vid=Math.floor(Math.random() * 3 +1)
             if (vid!=this.vid) {
@@ -181,11 +182,11 @@ update ()
         if (this.vid==RIGHT) { 
             
             
-            this.player1.setVelocityX(60);
+            this.player1.setVelocityX(70);
         
            
         }else if(this.vid== LEFT){
-            this.player1.setVelocityX(-60);
+            this.player1.setVelocityX(-70);
             
         }
         /*
@@ -215,17 +216,24 @@ update ()
         if (left) {
             this.vid=RIGHT;
             this.player1.anims.play('right')
-            this.broy=Phaser.Math.Between(60,320)
+            this.broy=Phaser.Math.Between(60,250)
             
         }
         if (right) {
             this.vid=LEFT;
             this.player1.anims.play('left')
-            this.broy=Phaser.Math.Between(60,320)
+            this.broy=Phaser.Math.Between(60,250)
         }
     }
     onmouseclick(pointer){
+        if (this.stopbomb) {
+            return
+        }
+        this.time.delayedCall(1000, () => { 
+            this.stopbomb=false
+        }, [], this)
         
+        this.stopbomb=true
         let star=this.physics.add.sprite(pointer.x,3, 'bomb');
         star.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
         this.physics.add.overlap(star, this.platforms,()=>{ 
@@ -234,13 +242,15 @@ update ()
             star.setBounceY(0)
         });
         this.physics.add.overlap(this.player1, star, ()=>{ this.hitbomb();star.disableBody(true, true);})
+        
     }
     hitbomb(){
-    this.player1.setVelocityX(0)
-    this.vid=STOP;
+    this.score += 5;
+    this.scoreText.setText('Score: ' + score);
     this.player1.setTint(0xff0000);
     this.player1.anims.play('turn');
-}
+    }
+    
 }
 const config = {
     type: Phaser.AUTO,
