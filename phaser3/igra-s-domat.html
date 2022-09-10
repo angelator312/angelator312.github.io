@@ -15,11 +15,12 @@
 <script type="text/javascript">
     const LEFT=2
     const RIGHT=1
+    const STOP=0
     class Games extends Phaser.Scene{
         constructor(){
             super()
             this.broy=0
-            this.broy2=0
+            this.vid=Math.floor(Math.random() * 3 +1)
         }
      
     preload ()
@@ -163,10 +164,11 @@ update ()
         {
             this.player1.setVelocityY(-330);
         }*/
+        if (this.vid!=STOP) {
         if (this.broy==0) {
             this.broy=Phaser.Math.Between(60,320)
             let vid=this.vid;
-            this.vid=Math.floor(Math.random() * 3 )
+            this.vid=Math.floor(Math.random() * 3 +1)
             if (vid!=this.vid) {
                 if (this.vid==RIGHT) {
                     this.player1.anims.play('right', true);
@@ -185,7 +187,8 @@ update ()
         }else if(this.vid== LEFT){
             this.player1.setVelocityX(-60);
             
-        }/*
+        }
+        /*
         let vid2=Math.floor(Math.random() * 3 )
         
         if (vid2==RIGHT) { 
@@ -202,7 +205,8 @@ update ()
             this.player2.setVelocityX(-7);
             this.player2.anims.play('left');
         }*/
-        this.broy--
+            this.broy--
+        }
         
     }
     
@@ -222,18 +226,18 @@ update ()
     }
     onmouseclick(pointer){
         
-        this.star=this.physics.add.sprite(pointer.x,3, 'bomb');
-        this.star.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
-        this.physics.add.overlap(this.star, this.platforms,()=>{ 
+        let star=this.physics.add.sprite(pointer.x,3, 'bomb');
+        star.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
+        this.physics.add.overlap(star, this.platforms,()=>{ 
             // this.star.disableBody(true, true);
-            this.star.setTint(0xff0000);
-            this.star.setBounceY(0)
+            star.setTint(0xff0000);
+            star.setBounceY(0)
         });
-        this.physics.add.overlap(this.player1, this.star, ()=>{ this.hitbomb();this.star.disableBody(true, true);})
+        this.physics.add.overlap(this.player1, star, ()=>{ this.hitbomb();star.disableBody(true, true);})
     }
     hitbomb(){
-    
-    this.physics.pause();
+    this.player1.setVelocityX(0)
+    this.vid=STOP;
     this.player1.setTint(0xff0000);
     this.player1.anims.play('turn');
 }
