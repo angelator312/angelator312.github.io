@@ -224,10 +224,11 @@ update ()
         
         this.star=this.physics.add.sprite(pointer.x,3, 'bomb');
         this.star.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
-        this.physics.add.overlap(this.star, this.platforms,()=>{ this.hitbomb;this.star.disableBody(true, true);});
-        this.physics.add.overlap(this.player1, this.star, ()=>{ this.star.disableBody(true, true);})
+        this.physics.add.overlap(this.star, this.platforms,()=>{ this.star.disableBody(true, true);});
+        this.physics.add.overlap(this.player1, this.star, ()=>{ this.hitbomb;this.star.disableBody(true, true);})
     }
     hitbomb(){
+    console.log('h');
     this.physics.pause();
     this.player1.setTint(0xff0000);
     this.player1.anims.play('turn');
