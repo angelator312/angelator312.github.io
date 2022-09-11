@@ -189,7 +189,7 @@ class Level extends Phaser.Scene {
 
 
     onworldboundce(player, up, down, left, right) {
-        let ipla=this.players.indexOf(player)
+        let ipla=this.players.findIndex((e)=>e.body==player)
         if (left) {
             this.vid[ipla] = RIGHT;
             this.players[ipla].anims.play('right')
