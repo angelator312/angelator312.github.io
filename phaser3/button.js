@@ -8,15 +8,6 @@ class Button {
         this.container = scene.add.container(btnX, btnY, [this.bg, this.text]);
         this.text.setX(0-(btnw-textw)/2)
         
-        /*scene.tweens.add({
-            targets: text,
-            alpha: 0.5,
-            duration: 1000,
-            ease: 'Sine.easeOut',
-            yoyo: true,
-            repeat: -1
-        });*/
-
         this.bg.on('pointerover', () => {
 
             this.bg.setTint(0x44ff44);
