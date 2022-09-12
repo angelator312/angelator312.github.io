@@ -4,21 +4,14 @@ const RIGHT = 1
 const STOP = 0
 class Level extends Phaser.Scene {
     constructor(brplayr=2) {
-        super()
+        super('level')
         this.players = []
         this.vid = []
         this.broy = []
         this.broypl = brplayr
     }
 
-    preload() {
-
-        this.load.image('sky', 'assets/sky.png');
-        this.load.image('ground', 'assets/platform.png');
-        this.load.image('button-blue', 'assets/upgrade-blue.png');
-        this.load.image('bomb', 'assets/tomato2.png');
-        this.load.spritesheet('dude', 'assets/dude.png', { frameWidth: 32, frameHeight: 48 });
-    }
+    preload() {}
 
     create() {
         this.score = 0
@@ -28,7 +21,10 @@ class Level extends Phaser.Scene {
 
         this.platforms.create(400, 568, 'ground').setScale(2).refreshBody();
 
-        this.button = new Button(this, 200, 200, 'wwwwwww', () => { console.log('true'); })
+        this.button = new Button(this, 200, 200, 'wwwwwww', () => { 
+            console.log('true'); 
+            this.scene.manager.start('upgrade');
+        })
         for (let i = 0; i < this.broypl; i++) {
             this.players.push(this.physics.add.sprite(150, 450, 'dude'))
             this.vid.push(LEFT)
@@ -64,43 +60,15 @@ class Level extends Phaser.Scene {
         });
 
         this.scoreText = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
-
+        this.coins=12;
+        this.registry.set('score', this.coins);
         for (const item in this.players) {
             this.physics.add.collider(this.players[item], this.platforms);
         }
         this.physics.world.on('worldbounds', (player, up, down, left, right) => { return this.onworldboundce(player, up, down, left, right) })
 
 
-        /* this.player2 = this.physics.add.sprite(165, 450, 'dude');
-         
-         this.player2.setBounce(0.2);
-         this.player2.setCollideWorldBounds(true);
-         
-         this.anims.create({
-             key: 'left',
-             frames: this.anims.generateFrameNumbers('dude', { start: 0, end: 3 }),
-             frameRate: 10,
-             repeat: -1
-         });
-         
-         this.anims.create({
-             key: 'turn',
-             frames: [ { key: 'dude', frame: 4 } ],
-             frameRate: 20
-         });
-         
-         this.anims.create({
-             key: 'right',
-             frames: this.anims.generateFrameNumbers('dude', { start: 5, end: 8 }),
-             frameRate: 10,
-             repeat: -1
-         });
-         
-         this.physics.add.collider(this.player2, this.platforms);
-         this.physics.add.collider(this.stars, this.platforms);
-         this.physics.add.collider(this.players[item], this.player2 );
-         this.physics.add.overlap(this.player2, this.stars, this.collectStar, null, this);*/
-        // this.cursors = this.input.keyboard.createCursorKeys();
+        
     }
 
     update() {
