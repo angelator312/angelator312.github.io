@@ -6,6 +6,7 @@ class Level extends Phaser.Scene {
     static brplayr=2
     static pe=[50,100,800]
     static Armor=0;
+    static SuperAr=0;
     constructor(name) {
         super(name)
         this.players = []
