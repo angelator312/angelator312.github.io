@@ -15,8 +15,8 @@ class Level extends Phaser.Scene {
         this.broypl = this.constructor.brplayr
         this.speed=1000
         this.score = 0
-        this.coins=300;
-        this.csplus=5
+        this.coins=0;
+        this.csplus=5;
         this.nivo=1;
     }
     
