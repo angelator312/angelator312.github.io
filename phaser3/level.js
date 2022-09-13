@@ -3,24 +3,36 @@ const LEFT = 2
 const RIGHT = 1
 const STOP = 0
 class Level extends Phaser.Scene {
-    constructor(brplayr=2) {
-        super('level')
+    static brplayr=2
+    static pe=[50,100,800]
+    constructor(name) {
+        super(name)
         this.players = []
         this.vid = []
         this.broy = []
-        this.broypl = brplayr
+        this.broypl = this.constructor.brplayr
         this.speed=1000
         this.score = 25
         this.coins=0;
         this.csplus=5
         this.nivo=1;
     }
-
+    
     preload() {}
 
+    addplayer(){
+        this.players.push(this.physics.add.sprite(150, 450, 'dude'))
+        this.vid.push(LEFT)
+        this.broy.push(0)
+        this.players[this.players.length-1].setBounce(0.2);
+        this.players[this.players.length-1].body.setCollideWorldBounds(true, undefined, undefined, true);
+}
+    
     create() {
+        this.registry.set('pe',Level.pe)
         this.registry.set('nivo',this.nivo)
         this.registry.set('csplus',this.csplus)
+        this.registry.set('addplayer',this.addplayer);
         this.registry.events.on('changedata', this.updateData, this);
         this.registry.set('speed', this.speed)
         this.add.image(400, 300, 'sky');
@@ -30,13 +42,7 @@ class Level extends Phaser.Scene {
             this.scene.manager.start('upgrade');
         })
         for (let i = 0; i < this.broypl; i++) {
-            this.players.push(this.physics.add.sprite(150, 450, 'dude'))
-            this.vid.push(LEFT)
-            this.broy.push(0)
-        }
-        for (const item in this.players) {
-            this.players[item].setBounce(0.2);
-            this.players[item].body.setCollideWorldBounds(true, undefined, undefined, true);
+            this.addplayer()
         }
         this.input.on('pointerdown', (pointer) => {
 
@@ -151,5 +157,6 @@ class Level extends Phaser.Scene {
     updateData(parent, key, data){
         this[key]=data;
     }
+   
 }
 export default Level

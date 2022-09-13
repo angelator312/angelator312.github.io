@@ -1,6 +1,6 @@
 import Upgrade from "./upgrademenu.js";
 import Preload from "./preload.js";
-import Level from "./level.js"
+import Level1 from "./level1.js"
 const config = {
     type: Phaser.AUTO,
     width: 800,
@@ -12,7 +12,7 @@ const config = {
             debug: false
         }
     },
-    scene: [Preload,Level,Upgrade]
+    scene: [Preload,Level1,Upgrade]
 };
 
 

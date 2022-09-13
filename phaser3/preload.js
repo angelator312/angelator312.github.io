@@ -13,7 +13,7 @@ class Preload extends Phaser.Scene {
         this.load.spritesheet('dude', 'assets/dude.png', { frameWidth: 32, frameHeight: 48 });
     }
 
-    create() {this.scene.start('level')}
+    create() {this.scene.start('level1')}
 
     update() {}
 
