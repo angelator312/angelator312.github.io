@@ -20,9 +20,9 @@ class Upgrade extends Phaser.Scene {
         let btns = [
             new Button(this, 75, 35, t[0], () => {
                 if (list.coins >= list.pe[0]) {
-                    list.csplus += 1
+                    list.csplus += 2
                     list.coins -= list.pe[0]
-                    list.pe[0] += 7;
+                    list.pe[0] += 65;
                     this.registry.set('pe', list.pe)
                     this.registry.set('csplus', list.csplus)
                     this.registry.set('coins', list.coins)
@@ -36,6 +36,7 @@ class Upgrade extends Phaser.Scene {
                     this.registry.set('pe', list.pe)
                     this.registry.set('speed', list.speed)
                     this.registry.set('coins', list.coins)
+                    console.log(list.pe,list.speed);
 
                 }
             }),

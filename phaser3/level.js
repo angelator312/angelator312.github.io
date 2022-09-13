@@ -5,6 +5,7 @@ const STOP = 0
 class Level extends Phaser.Scene {
     static brplayr=2
     static pe=[50,100,800]
+    static Armor=0;
     constructor(name) {
         super(name)
         this.players = []
@@ -12,8 +13,8 @@ class Level extends Phaser.Scene {
         this.broy = []
         this.broypl = this.constructor.brplayr
         this.speed=1000
-        this.score = 25
-        this.coins=0;
+        this.score = 0
+        this.coins=300;
         this.csplus=5
         this.nivo=1;
     }
