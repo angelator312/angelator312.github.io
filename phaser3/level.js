@@ -9,20 +9,24 @@ class Level extends Phaser.Scene {
         this.vid = []
         this.broy = []
         this.broypl = brplayr
+        this.speed=1000
+        this.score = 25
+        this.coins=0;
+        this.csplus=5
+        this.nivo=1;
     }
 
     preload() {}
 
     create() {
-        this.score = 0
+        this.registry.set('nivo',this.nivo)
+        this.registry.set('csplus',this.csplus)
+        this.registry.events.on('changedata', this.updateData, this);
+        this.registry.set('speed', this.speed)
         this.add.image(400, 300, 'sky');
-
         this.platforms = this.physics.add.staticGroup();
-
         this.platforms.create(400, 568, 'ground').setScale(2).refreshBody();
-
         this.button = new Button(this, 200, 200, 'wwwwwww', () => { 
-            console.log('true'); 
             this.scene.manager.start('upgrade');
         })
         for (let i = 0; i < this.broypl; i++) {
@@ -60,7 +64,6 @@ class Level extends Phaser.Scene {
         });
 
         this.scoreText = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
-        this.coins=12;
         this.registry.set('score', this.coins);
         for (const item in this.players) {
             this.physics.add.collider(this.players[item], this.platforms);
@@ -72,58 +75,7 @@ class Level extends Phaser.Scene {
     }
 
     update() {
-        /*if (this.cursors.left.isDown)
-        {
-            this.player2.setVelocityX(-160);
-            
-            this.player2.anims.play('left', true);
-        }
-        else if (this.cursors.right.isDown)
-        {
-                this.player2.setVelocityX(160);
-    
-                this.player2.anims.play('right', true);
-            }
-            else
-            {
-                this.player2.setVelocityX(0);
-    
-                this.player2.anims.play('turn');
-            }
-            if (this.cursors.up.isDown && this.player2.body.touching.down)
-            {
-                this.player2.setVelocityY(-330);
-            }
-            if (this.cursors.up.isDown && this.players[item].body.touching.down)
-            {
-                this.players[item].setVelocityY(-330);
-            }
-            if (this.cursors.left.isDown)
-            {
-                this.players[item].setVelocityX(-160);
-    
-                this.players[item].anims.play('left', true);
-            }
-            else if (this.cursors.right.isDown)
-            {
-                this.players[item].setVelocityX(160);
-    
-                this.players[item].anims.play('right', true);
-            }
-            else
-            {
-                this.players[item].setVelocityX(0);
-    
-                this.players[item].anims.play('turn');
-            }
-    
-            if (this.cursors.up.isDown && this.player2.body.touching.down)
-            {
-                this.players[item].setVelocityY(-330);
-            }*/
         for (const item in this.players) {
-
-
             if (this.vid[item] != STOP) {
                 if (this.broy[item] == 0) {
                     this.broy[item] = Phaser.Math.Between(44, 157)
@@ -174,10 +126,10 @@ class Level extends Phaser.Scene {
         if (this.stopbomb) {
             return
         }
-        this.time.delayedCall(1000, () => {
+        this.time.delayedCall(this.speed, () => {
             this.stopbomb = false
         }, [], this)
-
+        
         this.stopbomb = true
         let star = this.physics.add.sprite(pointer.x, 3, 'bomb');
         star.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
@@ -191,8 +143,13 @@ class Level extends Phaser.Scene {
         }
     }
     hitbomb() {
-        this.score += 5;
+        this.coins += this.csplus;
+        this.registry.set('coins', this.coins)
+        this.score += this.csplus;
         this.scoreText.setText('Score: ' + this.score);
+    }
+    updateData(parent, key, data){
+        this[key]=data;
     }
 }
 export default Level
