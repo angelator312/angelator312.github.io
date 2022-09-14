@@ -4,7 +4,7 @@ const RIGHT = 1
 const STOP = 0
 class Level extends Phaser.Scene {
     static brplayr=2
-    static pe=[50,100,800]
+    static peplus=[0,0,0]
     static Armor=0;
     static SuperAr=0;
     constructor(name) {
@@ -15,9 +15,10 @@ class Level extends Phaser.Scene {
         this.broypl = this.constructor.brplayr
         this.speed=1000
         this.score = 0
-        this.coins=800;
+        this.coins=0;
         this.csplus=5;
         this.nivo=1;
+        this.pe=[50+this.constructor.peplus[0],100+this.constructor.peplus[1],100+this.constructor.peplus[2]]
     }
     
     preload() {}
@@ -32,7 +33,7 @@ class Level extends Phaser.Scene {
     }
     
     create() {
-        this.registry.set('pe',Level.pe)
+        this.registry.set('pe',this.pe)
         this.registry.set('nivo',this.nivo)
         this.registry.set('csplus',this.csplus)
         this.registry.set('addplayer',false);
