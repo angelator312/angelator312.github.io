@@ -28,7 +28,7 @@ class Level extends Phaser.Scene {
         this.broy.push(0)
         this.players[this.players.length-1].setBounce(0.2);
         this.players[this.players.length-1].body.setCollideWorldBounds(true, undefined, undefined, true);
-        this.physics.add.collider(this.players[item], this.platforms);
+        this.physics.add.collider(this.players[this.players.length-1], this.platforms);
     }
     
     create() {
