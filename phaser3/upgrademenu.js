@@ -16,7 +16,7 @@ class Upgrade extends Phaser.Scene {
         })
         this.scoreText = this.add.text(300, 300, `coins: ${this.registry.list.coins}`, { fontSize: '32px', fill: '#000' });
         let list = this.registry.list;
-        let t = ['повече злато', 'скорост', 'еrror не работи']
+        let t = ['повече злато', 'скорост', ' повече играчи']
         let btns = [
             new Button(this, 75, 35, t[0], () => {
                 if (list.coins >= list.pe[0]) {
@@ -40,15 +40,15 @@ class Upgrade extends Phaser.Scene {
 
                 }
             }),
-            new Button(this, 75, 35, t[2], () => {/*
+            new Button(this, 75, 35, t[2], () => {
                 if (list.coins >= list.pe[2]) {
-                    this.registry.list.addplayer()
+                    this.registry.list.addplayer=true
                     list.coins -= list.pe[2]
                     list.pe[2] += 100
                     this.registry.set('pe', list.pe)
                     this.registry.set('coins', list.coins)
 
-                }*/
+                }
             })
         ]
 

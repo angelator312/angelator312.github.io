@@ -15,7 +15,7 @@ class Level extends Phaser.Scene {
         this.broypl = this.constructor.brplayr
         this.speed=1000
         this.score = 0
-        this.coins=0;
+        this.coins=800;
         this.csplus=5;
         this.nivo=1;
     }
@@ -28,13 +28,14 @@ class Level extends Phaser.Scene {
         this.broy.push(0)
         this.players[this.players.length-1].setBounce(0.2);
         this.players[this.players.length-1].body.setCollideWorldBounds(true, undefined, undefined, true);
-}
+        this.physics.add.collider(this.players[item], this.platforms);
+    }
     
     create() {
         this.registry.set('pe',Level.pe)
         this.registry.set('nivo',this.nivo)
         this.registry.set('csplus',this.csplus)
-        this.registry.set('addplayer',this.addplayer);
+        this.registry.set('addplayer',false);
         this.registry.events.on('changedata', this.updateData, this);
         this.registry.set('speed', this.speed)
         this.add.image(400, 300, 'sky');
@@ -72,10 +73,7 @@ class Level extends Phaser.Scene {
         });
 
         this.scoreText = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
-        this.registry.set('score', this.coins);
-        for (const item in this.players) {
-            this.physics.add.collider(this.players[item], this.platforms);
-        }
+        this.registry.set('score', this.coins);        
         this.physics.world.on('worldbounds', (player, up, down, left, right) => { return this.onworldboundce(player, up, down, left, right) })
 
 
@@ -157,6 +155,10 @@ class Level extends Phaser.Scene {
         this.scoreText.setText('Score: ' + this.score);
     }
     updateData(parent, key, data){
+        if (this.registry.list.addplayer) {
+            this.registry.list.addplayer=false;
+            this.addplayer()
+        }
         this[key]=data;
     }
    
