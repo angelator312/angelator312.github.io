@@ -2,18 +2,18 @@ import Button from './button.js'
 const LEFT = 2
 const RIGHT = 1
 const STOP = 0
-class Level extends Phaser.Scene {
-    static brplayr=2
-    static peplus=[0,0,0]
-    static Armor=0;
+class Levelbosses extends Phaser.Scene {
+    static peplus=[40,50,90]
+    static Armor=60;
     static SuperAr=0;
-    static endscore=1000
+    static pluscoins=200;
     constructor(name,nivo) {
         super(name)
         this.players = []
         this.vid = []
         this.broy = []
-        this.broypl = this.constructor.brplayr
+        this.pluscoins= this.constructor.pluscoins;
+        this.broypl = 1
         this.speed=1000
         this.score = 0
         this.coins=0;
@@ -21,12 +21,13 @@ class Level extends Phaser.Scene {
         this.endscore=this.constructor.endscore;
         this.win=false
         this.nivo=nivo
-        this.pe=[1,1,0]/*[50+this.constructor.peplus[0],100+this.constructor.peplus[1],100+this.constructor.peplus[2]]*/
+        this.armor=this.constructor.Armor;
+        this.pe=[50+this.constructor.peplus[0],100+this.constructor.peplus[1],100+this.constructor.peplus[2]]
     }
     
     preload() {}
 
-    plusplayer(){
+    addplayer(){
         this.players.push(this.physics.add.sprite(150, 450, 'dude'))
         this.vid.push(LEFT)
         this.broy.push(0)
@@ -36,14 +37,10 @@ class Level extends Phaser.Scene {
     }
     
     create() {
-        console.log('create',this.nivo);
         this.registry.set('pe',this.pe)
-        this.registry.set('nivo',this.nivo)
+        
         this.registry.set('csplus',this.csplus)
         this.registry.set('addplayer',false);
-        if(this.nivo>=2) {
-            this.coins += this.registry.list.coins;
-        }
         this.registry.events.on('changedata', this.updateData, this);
         this.registry.set('speed', this.speed)
         this.add.image(400, 300, 'sky');
@@ -53,7 +50,7 @@ class Level extends Phaser.Scene {
             this.scene.manager.start('upgrade');
         })
         for (let i = 0; i < this.broypl; i++) {
-            this.plusplayer()
+            this.addplayer()
         }
         this.input.on('pointerdown', (pointer) => {
 
@@ -160,27 +157,35 @@ class Level extends Phaser.Scene {
         }
     }
     hitbomb() {
-        this.coins += this.csplus;
-        this.registry.set('coins', this.coins)
+        // this.coins += this.csplus;
+        // this.registry.set('coins', this.coins)
+        if(this.nivo>=2) {
+            this.coins += this.registry.list.coins;
+        }
         this.score += this.csplus;
+        this.armor -=this.csplus;
+        console.log(this.armor,this.armor-this.csplus);
         this.scoreText.setText('Score: ' + this.score);
-        if (this.endscore<=this.score) {
+        if (this.armor<=0) {
             this.win=true;
             for (const item in this.vid) {
                 this.vid[item]=STOP
                 this.players[item].setVelocityX(0)
                 this.players[item].anims.play('turn')
             }
-            new Button(this, 300, 200,'към следващо ниво',()=>{this.scene.stop(`level${this.nivo}`); this.scene.start(`level${this.nivo+1}`)},4)
+            this.coins+= this.pluscoins;
+            this.registry.set('coins', this.coins)
+            this.registry.set('bossp',true);
+            new Button(this, 300, 200,'към следващо ниво',()=>this.scene.start(`level${this.nivo+1}`),4)
         }
     }
     updateData(parent, key, data){
         if (this.registry.list.addplayer) {
             this.registry.list.addplayer=false;
-            this.plusplayer()
+            this.addplayer()
         }
         this[key]=data;
     }
    
 }
-export default Level
+export default Levelbosses

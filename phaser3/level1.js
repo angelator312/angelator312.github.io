@@ -1,8 +1,9 @@
 import Level from "./level.js";
 class Level1  extends Level{
     static brplayr=2
+    static endscore=0
     constructor() {
-        super('level1')
+        super('level1',1)
     }
 }
 

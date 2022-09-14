@@ -1,12 +1,13 @@
 class Button {
-    constructor(scene, btnX, btnY, text,callback, color = 'blue') {
+    constructor(scene, btnX, btnY, text,callback,scale=1, color = 'blue') {
         this.bg = scene.add.image(0, 0, `button-${color}`).setInteractive();
         this.text = scene.add.text(0, 0, text)
+        this.bg.setScale(scale)
         let textw = this.text.displayWidth, texth = this.text.displayHeight;
         let btnw = this.bg.displayWidth, btnh = this.bg.displayHeight;
         this.text.setY(0-(btnh-texth)/2)
-        this.container = scene.add.container(btnX, btnY, [this.bg, this.text]);
         this.text.setX(0-(btnw-textw)/2)
+        this.container = scene.add.container(btnX, btnY, [this.bg, this.text]);
         
         this.bg.on('pointerover', () => {
 
