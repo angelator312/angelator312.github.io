@@ -81,6 +81,7 @@ class Level extends Phaser.Scene {
         });
 
         this.scoreText = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
+        this.Leveltext = this.add.text(50,16,`Level: ${this.nivo}`)
         this.registry.set('score', this.coins);        
         this.physics.world.on('worldbounds', (player, up, down, left, right) => { return this.onworldboundce(player, up, down, left, right) })
 
@@ -175,6 +176,9 @@ class Level extends Phaser.Scene {
         }
     }
     updateData(parent, key, data){
+        if(!this.scene.isActive()) {
+            return
+        }
         if (this.registry.list.addplayer) {
             this.registry.list.addplayer=false;
             this.plusplayer()

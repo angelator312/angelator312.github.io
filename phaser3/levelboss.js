@@ -21,6 +21,7 @@ class Levelbosses extends Phaser.Scene {
         this.endscore=this.constructor.endscore;
         this.win=false
         this.nivo=nivo
+        this.shields=[]
         this.armor=this.constructor.Armor;
         this.pe=[50+this.constructor.peplus[0],100+this.constructor.peplus[1],100+this.constructor.peplus[2]]
     }
@@ -28,12 +29,18 @@ class Levelbosses extends Phaser.Scene {
     preload() {}
 
     addplayer(){
-        this.players.push(this.physics.add.sprite(150, 450, 'dude'))
+        this.players.push(this.physics.add.sprite(150, 450, 'boss1'))
         this.vid.push(LEFT)
         this.broy.push(0)
         this.players[this.players.length-1].setBounce(0.2);
         this.players[this.players.length-1].body.setCollideWorldBounds(true, undefined, undefined, true);
         this.physics.add.collider(this.players[this.players.length-1], this.platforms);
+        this.players[this.players.length-1].setScale(2);
+        let shield=this.physics.add.sprite(150,430,'shield');
+        shield.setScale(2);
+        shield.body.setAllowGravity(false);
+        this.physics.add.collider(shield, this.platforms);
+        this.shields.push({s:shield,life:20})
     }
     
     create() {
@@ -59,7 +66,7 @@ class Levelbosses extends Phaser.Scene {
         }, this);
         this.anims.create({
             key: 'left',
-            frames: this.anims.generateFrameNumbers('dude', { start: 0, end: 3 }),
+            frames: this.anims.generateFrameNumbers('boss1', { start: 14, end: 28 }),
             frameRate: 10,
             repeat: -1
         });
@@ -72,17 +79,16 @@ class Levelbosses extends Phaser.Scene {
 
         this.anims.create({
             key: 'right',
-            frames: this.anims.generateFrameNumbers('dude', { start: 5, end: 8 }),
+            frames: this.anims.generateFrameNumbers('boss1', { start: 0, end: 14 }),
             frameRate: 10,
             repeat: -1
         });
-
+        this.Leveltext = this.add.text(23, 16, `Level: ${this.nivo},bossnivo`);
         this.scoreText = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
         this.registry.set('score', this.coins);        
         this.physics.world.on('worldbounds', (player, up, down, left, right) => { return this.onworldboundce(player, up, down, left, right) })
-
-
         
+
     }
 
     update() {
@@ -106,11 +112,16 @@ class Levelbosses extends Phaser.Scene {
 
 
                     this.players[item].setVelocityX(90);
-
+                    if (this.shields[item]) {
+                        this.shields[item].s.setVelocityX(90)
+                    }
+                    
 
                 } else if (this.vid[item] == LEFT) {
                     this.players[item].setVelocityX(-90);
-
+                    if (this.shields[item]) {
+                        this.shields[item].s.setVelocityX(-90)
+                    }
                 }
                 this.broy[item]--
             }
@@ -155,13 +166,14 @@ class Levelbosses extends Phaser.Scene {
         for (const item in this.players) {
             this.physics.add.overlap(this.players[item], star, () => { this.hitbomb(); star.disableBody(true, true); })
         }
+        for (const item in this.shields) {
+            let shieldi=item;
+            this.physics.add.overlap(this.shields[item].s, star, () => { this.hitshild(shieldi); star.disableBody(true, true); })
+        }
     }
     hitbomb() {
         // this.coins += this.csplus;
         // this.registry.set('coins', this.coins)
-        if(this.nivo>=2) {
-            this.coins += this.registry.list.coins;
-        }
         this.score += this.csplus;
         this.armor -=this.csplus;
         console.log(this.armor,this.armor-this.csplus);
@@ -180,11 +192,22 @@ class Levelbosses extends Phaser.Scene {
         }
     }
     updateData(parent, key, data){
+        if(!this.scene.isActive()) {
+            return
+        }
         if (this.registry.list.addplayer) {
             this.registry.list.addplayer=false;
             this.addplayer()
         }
         this[key]=data;
+    }
+    hitshild(i){
+        this.shields[i].life-=this.csplus;
+        console.log(i);
+        if (this.shields[i].life<=0) {
+            this.shields[i].s.setTint(0xff0000)
+            this.shields[i]=null
+        }
     }
    
 }
