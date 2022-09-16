@@ -21,9 +21,8 @@ class Level extends Phaser.Scene {
         this.endscore=this.constructor.endscore;
         this.win=false
         this.nivo=nivo
-        this.pe=[1,1,0]/*[50+this.constructor.peplus[0],100+this.constructor.peplus[1],100+this.constructor.peplus[2]]*/
+        this.pe=[50+this.constructor.peplus[0],100+this.constructor.peplus[1],100+this.constructor.peplus[2]]
     }
-    
     preload() {}
 
     plusplayer(){
