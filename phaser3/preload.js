@@ -15,7 +15,7 @@ class Preload extends Phaser.Scene {
         this.load.image('shield','assets/bosses/shield.png')
     }
 
-    create() {this.scene.start('level3')}
+    create() {this.scene.start('level1')}
 
     update() {}
 

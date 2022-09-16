@@ -65,7 +65,7 @@ class Levelbosses extends Phaser.Scene {
 
         }, this);
         this.anims.create({
-            key: 'left',
+            key: 'leftboss',
             frames: this.anims.generateFrameNumbers('boss1', { start: 14, end: 28 }),
             frameRate: 10,
             repeat: -1
@@ -78,7 +78,7 @@ class Levelbosses extends Phaser.Scene {
         });
 
         this.anims.create({
-            key: 'right',
+            key: 'rightboss',
             frames: this.anims.generateFrameNumbers('boss1', { start: 0, end: 14 }),
             frameRate: 10,
             repeat: -1
@@ -102,9 +102,9 @@ class Levelbosses extends Phaser.Scene {
                         this.vid[item] = Math.floor(Math.random() * 2 + 1)
                     }
                     if (this.vid[item] == RIGHT) {
-                        this.players[item].anims.play('right', true);
+                        this.players[item].anims.play('rightboss', true);
                     } else if (this.vid[item] == LEFT) {
-                        this.players[item].anims.play('left', true);
+                        this.players[item].anims.play('leftboss', true);
                     }
                 }
 
@@ -134,13 +134,13 @@ class Levelbosses extends Phaser.Scene {
         let ipla=this.players.findIndex((e)=>e.body==player)
         if (left) {
             this.vid[ipla] = RIGHT;
-            this.players[ipla].anims.play('right')
+            this.players[ipla].anims.play('rightboss')
             this.broy[ipla] = Phaser.Math.Between(44, 157)
 
         }
         if (right) {
             this.vid[ipla] = LEFT;
-            this.players[ipla].anims.play('left')
+            this.players[ipla].anims.play('leftboss')
             this.broy[ipla] = Phaser.Math.Between(44, 157)
         }
     }
