@@ -1,6 +1,7 @@
 let task = document.getElementById('task')
 let input= document.getElementById('result')
 let yorn = document.getElementById('yorn')
+let dialog= document.getElementById('d')
 function random(min=0,max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
 }
@@ -37,5 +38,7 @@ function proverka() {
         newtask()
     }
 }
+setTimeout(dialog.show(),1000);
+setTimeout(dialog.hide(),1000);
 document.body.onload(newtask())
 console.clear()
