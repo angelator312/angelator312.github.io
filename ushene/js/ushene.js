@@ -38,7 +38,5 @@ function proverka() {
         newtask()
     }
 }
-setTimeout(dialog.show(),1000);
-setTimeout(dialog.hide(),1000);
 document.body.onload(newtask())
 console.clear()
