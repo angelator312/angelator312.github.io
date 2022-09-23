@@ -17,14 +17,18 @@ input.addEventListener("keypress", function(event) {
 function newtask() {
     let random1 =random(42,45)
     let znak = random1==44?'/':String.fromCharCode(random1)
+    random1=random(1,100)
     if (znak!='+') {
-    let random2= random(0,random1)
+    let random2= random(1,random1)
     if (znak!='-') {
-        random2=random(0,10)
+        random2=random(1,10)
+        while(znak=='/' && random1%random2!=0){
+            random2=random(1,random1)
+        }
     }
-    task.innerHTML = `${random(0,100)}${znak}${random2}`;
+    task.innerHTML = `${random1}${znak}${random2}`;
     }else{
-    task.innerHTML = `${random(0,100)}${znak}${random(0,100)}`;
+    task.innerHTML = `${random(1,100)}${znak}${random(1,100)}`;
     }
 }
 function proverka() {
