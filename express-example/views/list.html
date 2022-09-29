@@ -1,0 +1,14 @@
+<% include('_header.html') %>
+
+<h1>Пример как се ползва списък</h1>
+
+<h3>Списък с налични плодове</h3>
+<ul id="fruits">
+  <!-- използваме for цикъл за да генерираме списък от li елементи -->
+  <% for(const fruit of fruits){ %>
+    <li><%= fruit %> </li>
+  <% } %>
+</ul>
+
+
+<% include('_footer.html') %>

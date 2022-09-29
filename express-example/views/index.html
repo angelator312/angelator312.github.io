@@ -1,0 +1,10 @@
+<% include('_header.html') %>
+
+<h1>Пример как да използваме ejs темплйти със express</h1>
+
+  <!-- използваме for цикъл за да генерираме списък от линкове-->
+  <% for(const t of templateList) { %>
+    <a href="/<%= t %>"><%= t %></a><br>
+  <% } %>
+
+<% include('_footer.html') %>
