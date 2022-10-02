@@ -1,23 +1,27 @@
 const fs = require('fs');
 const express = require('express')
-const path = require('path')
+const path = require('path');
+const { text } = require('express');
 const app = express()
 const port = 8080
 let vids = {}
+let cwdd= process.cwd().split('/')
+cwdd = cwdd.slice(cwdd.length-2).join('/')
 function listFiles(res) {
-  console.log('listFiles');
-  let list = fs.readdirSync(process.cwd());
-  console.log('listFiles2');
+  
+  let list = fs.readdirSync(process.cwd()).filter(t=>t.endsWith('.js')||t.endsWith('.html'));
+  
   res.render('index.html', {
-    list:list
+    list:list,
+    cwd: cwdd
   });
-  console.log('listFiles3');
+  
   res.end();
 }
 
 function sendFile(path, res) {
   fs.readFile(path, function (err, data) {
-    console.log('sendFile');
+    
     if (!err) {
       res.writeHead(200, { 'Content-Type': `text/${vids[path]}` });
       res.write(data);
@@ -33,11 +37,11 @@ app.engine('.html', require('ejs').__express);
 app.set('views', path.join(__dirname, 'views'));
 app.get('/', (req, res) => {
   listFiles(res)
-  console.log('stranno');
+  
 })
 app.get('/:path', (req, res) => {
   sendFile(req.params.path, res)
 })
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
+  
 })

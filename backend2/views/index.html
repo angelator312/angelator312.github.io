@@ -1,15 +1,19 @@
-<main>
-    <header>
-        <h1> <i>Index of&nbsp;</i>. <a href="/">${process.cwd()}/</a> </h1>
-    </header>
+<!DOCTYPE html>
+<html>
+    <head>
+    </head>
+    <body>
+    <h1> <i>Index of&nbsp;</i>. <a href="/"><%= cwd  %> </a> </h1>
+    
     <ul id="files">
 
         <!-- for (let index = 0; index < list.length; index++) {
     res.write(`   -->
-        <% for (const l of list) %>
+        <% for (const l of list){ %>
             <li> <a href="/<%= l %>" >
                     <%= l %></a> </li>
                     <% } %>
 
     </ul>
-</main>
+</body>
+</html>

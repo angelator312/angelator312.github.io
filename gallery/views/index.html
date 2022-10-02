@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+div.gallery {
+  margin: 5px;
+  border: 1px solid #ccc;
+  float: left;
+  width: 180px;
+}
+div.gallery img {
+  width: 100%;
+  height: auto;
+}
+</style>
+</head>
+<body>
+  <h1>Gallery</h1>
+<% for(let l in iList ){ %> 
+<div class="gallery">
+  <a target="_blank" href="<%= iList[l] %>">
+    <img src="../<%= iList[l] %> " alt="<%=  l %> " width="600" height="400">
+  </a>
+</div>
+<% } %> 
+</body>
+</html>
