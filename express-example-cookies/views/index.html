@@ -1,0 +1,14 @@
+<% include('_header.html') %>
+
+<h1>Пример как да използваме cookies със express</h1>
+
+<a href="/set-cookie">Сложи бисквитки</a> <br>
+<a href="/clear-cookie">Изчисти бисквитки</a> <br>
+
+<hr>
+Получени бисквитки:<br><br>
+<% for (const [name, value] of Object.entries(receivedCookies)) { %>
+<b><%= name %></b>: <%= value %> <br>
+<% } %>
+
+<% include('_footer.html') %>
