@@ -1,6 +1,5 @@
 const {
-  addsessionkey, deletesessionkey, srandom, setsessionfile, getsessionkey,
-  addregystrykey, deleteregistrykey, setregistryfile, getregistrykey
+  srandom,Filestore
 } = require('./jsonwjs')
 const express = require('express');
 const path = require('path');
@@ -10,15 +9,15 @@ const app = express();
 const port = 8080
 const templatePath = path.join(__dirname, 'views');
 const imageList = fs.readdirSync(`${process.cwd()}`).filter(t => t.endsWith('.jpg') || t.endsWith('.png'))
-const users = [{ username: 'angelator312', password: 'linux' }, { username: 'zaro', password: 'js' }]
+const cookieage=60000*30
 let vids = {}
+const session= new Filestore('session.json');
+const registry = new Filestore('registry.json');
 for (const i in imageList) {
   vids[imageList[i]] = imageList[i].substring(imageList[i].length - 3)
 }
-setsessionfile('session.json')
 function sendFile(path, res) {
   fs.readFile(path, function (err, data) {
-
     if (!err) {
       res.writeHead(200, { 'Content-Type': `image/${vids[path]}` });
       res.write(data);
@@ -38,7 +37,7 @@ app.use(cookieParser());
 app.set('view engine', '.html');
 app.get('/', function (req, res) {
   if (req.cookies.lognat) {
-    getsessionkey(req.cookies.lognat, (err, data) => {
+    session.getkey(req.cookies.lognat, (err, data) => {
       res.render('index', {
         iList: imageList,
         username: data.username
@@ -61,13 +60,13 @@ app.get('/registyr', function (req, res) {
 app.get('/registyrregistyr', function (req, res) {
   if (req.query.password == req.query.password2) {
     let sid = srandom()
-    addregystrykey(req.query.username, {
+    registry.addkey(req.query.username, {
       username: req.query.username,
       password: req.query.password
     },
       (err) => {
-        res.cookie('lognat', sid)
-        addsessionkey(sid, {
+        res.cookie('lognat', sid,{maxAge:cookieage})
+        session.addkey(sid, {
           username: req.query.username,
           password: req.query.password
         }, () => res.redirect('/'))
@@ -81,48 +80,26 @@ app.get('/login', function (req, res) {
   })
 });
 app.get('/logout', function (req, res) {
-  deletesessionkey(req.cookies.lognat, () => {
+  session.deletekey(req.cookies.lognat, () => {
     res.clearCookie('lognat');
     res.redirect('/');
   })
 
 })
-app.get('/loginregister', function (req, res) {
-  let valid = false;
-  let username = req.query.username
-  let password = req.query.password
-  for (const i in users) {
-    if (users[i].username == username && users[i].password == password) {
-      valid = true;
-    }
-  }
-  if (valid) {
-    let sid = srandom()
-    addsessionkey(sid, { username, password }, () => {
-      res.cookie('lognat', sid)
-      res.redirect('/')
-    }
-    )
-  } else {
-    res.render('login', {
-      yorn: 'има грешка в username или в password'
-    })
-  }
-})
 app.get('/loginregister2', function (req, res) {
-  console.log('login2');
+  
   let valid = false;
   let username = req.query.username
   let password = req.query.password
-  getregistrykey(username, (err, data) => {
-    console.log(data);
+  registry.getkey(username, (err, data) => {
+    
     if (data.username == username && data.password == password) {
       valid = true;
     }
     if (valid) {
       let sid = srandom()
-      addsessionkey(sid, { username, password }, () => {
-        res.cookie('lognat', sid)
+      session.addkey(sid, { username, password }, () => {
+        res.cookie('lognat', sid,{maxAge:cookieage})
         res.redirect('/')
         return;
       }
@@ -139,5 +116,5 @@ app.get('/:path?', function (req, res) {
   sendFile(req.params.path, res)
 });
 app.listen(port, () => {
-  console.log('Express started on port 8080');
+  
 });
