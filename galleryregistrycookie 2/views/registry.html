@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<%- include('_header.html') %>
+<form action="/registyrregistyr">
+    <input name="username" type="text">
+    <input name="password" type="password">
+    <input name="password2" type="password">
+    <input type="submit">
+</form> 
+<% if(yorn){ %> 
+    <p><%= yorn %> </p>
+<% }%>     
+<%- include('_footer.html') %> 

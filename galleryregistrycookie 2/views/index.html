@@ -1,0 +1,17 @@
+<%- include('_header.html') %> 
+  <h1>Gallery</h1> 
+<% for(let l in iList ){ %> 
+<div class="gallery">
+  <a target="_blank" href="<%= iList[l] %>">
+    <img src="../<%= iList[l] %> " alt="<%=  l %> " width="60" height="60">
+  </a>
+</div>
+<% } %> 
+<% if(username) {%> 
+  <p>Hello <%= username %></p>
+  <a href="logout">logout</a>
+<% }else{ %> 
+    <a href="login">login</a>
+<% } %> 
+<a href="registyr">registry</a>
+<%- include('_footer.html') %> 
