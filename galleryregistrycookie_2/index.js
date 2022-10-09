@@ -1,5 +1,5 @@
 const {
-  srandom,Filestore
+  srandom, Filestore
 } = require('./jsonwjs')
 const express = require('express');
 const path = require('path');
@@ -8,16 +8,16 @@ const cookieParser = require('cookie-parser');
 const app = express();
 const port = 8080
 const templatePath = path.join(__dirname, 'views');
-const imageList = fs.readdirSync(`${process.cwd()}`).filter(t => t.endsWith('.jpg') || t.endsWith('.png'))
-const cookieage=60000*30
+const imageList = fs.readdirSync(`${process.cwd()}/image`).filter(t => t.endsWith('.jpg') || t.endsWith('.png'))
+const cookieage = 60000 * 30
 let vids = {}
-const session= new Filestore('session.json');
+const session = new Filestore('session.json');
 const registry = new Filestore('registry.json');
 for (const i in imageList) {
   vids[imageList[i]] = imageList[i].substring(imageList[i].length - 3)
 }
 function sendFile(path, res) {
-  fs.readFile(path, function (err, data) {
+  fs.readFile(`image/${path}`, function (err, data) {
     if (!err) {
       res.writeHead(200, { 'Content-Type': `image/${vids[path]}` });
       res.write(data);
@@ -65,7 +65,7 @@ app.get('/registyrregistyr', function (req, res) {
       password: req.query.password
     },
       (err) => {
-        res.cookie('lognat', sid,{maxAge:cookieage})
+        res.cookie('lognat', sid, { maxAge: cookieage })
         session.addkey(sid, {
           username: req.query.username,
           password: req.query.password
@@ -87,28 +87,27 @@ app.get('/logout', function (req, res) {
 
 })
 app.get('/loginregister2', function (req, res) {
-  
   let valid = false;
   let username = req.query.username
   let password = req.query.password
   registry.getkey(username, (err, data) => {
-    
+    if (err) {
+      res.render('login', {
+        yorn: 'има грешка в username или в password'
+      })
+      return;
+    }
     if (data.username == username && data.password == password) {
       valid = true;
     }
     if (valid) {
       let sid = srandom()
       session.addkey(sid, { username, password }, () => {
-        res.cookie('lognat', sid,{maxAge:cookieage})
+        res.cookie('lognat', sid, { maxAge: cookieage })
         res.redirect('/')
         return;
       }
       )
-    } else {
-      res.render('login', {
-        yorn: 'има грешка в username или в password'
-      })
-      return;
     }
   })
 })
@@ -116,5 +115,5 @@ app.get('/:path?', function (req, res) {
   sendFile(req.params.path, res)
 });
 app.listen(port, () => {
-  
+
 });

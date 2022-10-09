@@ -45,7 +45,11 @@ class Filestore {
             if (err) {
                 callback(err)
             } else {
+                if(data[key]){
                 callback(err, data[key])
+                }else{
+                    callback(new Error('JSONproblems'))
+                }
             }
         })
     }
