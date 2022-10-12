@@ -6,14 +6,14 @@ const path = require('path');
 const fs = require('fs');
 const multer = require('multer');
 const cookieParser = require('cookie-parser');
-const mime = require('mime-types')
+const mime = require('mime-types');
 const app = express();
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, 'image')
   },
   filename: function (req, file, cb) {
-    cb(null, file.originalname)
+    proverka(file, cb)
   }
 })
 const templatePath = path.join(__dirname, 'views');
@@ -22,8 +22,19 @@ const port = 8080
 const cookieage = 60000 * 30
 const session = new Filestore('session.json');
 const registry = new Filestore('registry.json');
+function proverka(file, cb) {
+  fs.stat(`image/${file.originalname}`, (err, stats) => {
+    if (!stats) {
+      cb(null, file.originalname)
+    } else {
+      let nexte=file.originalname.substring(file.originalname.lastIndexOf('.'))
+      let newname=file.originalname.substring(0,file.originalname.lastIndexOf('.'))+new Date().getTime()+nexte;
+      cb(null,newname)
+    }
+  })
+}
 function sendFile(path, res) {
-  const type = mime.lookup( path );
+  const type = mime.lookup(path);
   fs.readFile(`image/${path}`, function (err, data) {
     if (!err) {
       res.writeHead(200, { 'Content-Type': `image/${type}` });
@@ -43,8 +54,8 @@ app.use(cookieParser());
 // Конфигурираме  разширението по подразбиране за темплейтите
 app.set('view engine', '.html');
 app.get('/', function (req, res) {
+  const imageList = fs.readdirSync(`${process.cwd()}/image`).filter(t => t.endsWith('.jpg') || t.endsWith('.png'))
   if (req.cookies.lognat) {
-    const imageList = fs.readdirSync(`${process.cwd()}/image`).filter(t => t.endsWith('.jpg') || t.endsWith('.png'))
     session.getkey(req.cookies.lognat, (err, data) => {
       res.render('index', {
         iList: imageList,
@@ -126,7 +137,6 @@ app.get('/upload', function (req, res) {
 app.post('/uploadimage', upload.single('myfile'), function (req, res, next) {
   // req.file is the `avatar` file
   // req.body will hold the text fields, if there were any
-  console.log(req.file);
   res.redirect('/')
 })
 
