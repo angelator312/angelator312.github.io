@@ -1,0 +1,14 @@
+<%- include('_header.html') %>
+<ul>
+<% for (const key in chasove) { %>
+    <li><div class="square">
+        <button>
+            <p>
+                час:
+                <%= chasove[key] %> 
+            </p>
+        </button>
+    </div></li>    
+<% } %> 
+</ul>
+<%- include('_footer.html') %>
