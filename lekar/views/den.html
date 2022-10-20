@@ -1,14 +1,31 @@
 <%- include('_header.html') %>
-<ul>
-<% for (const key in chasove) { %>
-    <li><div class="square">
-        <button>
-            <p>
-                час:
-                <%= chasove[key] %> 
-            </p>
-        </button>
-    </div></li>    
-<% } %> 
-</ul>
-<%- include('_footer.html') %>
+    <a href="">
+
+    </a>
+    <table class="table table-info">
+        <tr>
+            <th>
+                час
+            </th>
+            <th>
+                име
+            </th>
+        </tr>
+        <% for (const key in chasove) { %>
+            <tr>
+                <td>
+                    <%= key %>
+                </td>
+                <td>
+                    <% if (!chasove[key]) { %>
+                        <button class="btn btn-success">
+                            запази час
+                        </button>
+                        <% }else{ %>
+                            <%= chasove[key] %> 
+                            <% } %>
+                </td>
+            </tr>
+            <% } %>
+    </table>
+    <%- include('_footer.html') %>
