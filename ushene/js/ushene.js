@@ -1,9 +1,18 @@
-let task = document.getElementById('task')
-let input= document.getElementById('result')
-let yorn = document.getElementById('yorn')
-let dialog= document.getElementById('d')
+const task = document.getElementById('task')
+const input= document.getElementById('result')
+const yorn = document.getElementById('yorn')
+const dialog= document.getElementById('d')
+const verni = document.getElementById("verni")
 function random(min=0,max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
+}
+function verniplus() {
+    if (!verni.value) {
+        verni=1;
+    }else{
+        verni+=1;
+    }
+
 }
 input.addEventListener("keypress", function(event) {
     // If the user presses the "Enter" key on the keyboard
@@ -35,10 +44,12 @@ function proverka() {
     if(parseInt(eval(input.value))===parseInt(eval(task.innerHTML))){
         newtask()
         yorn.innerHTML='да'
+        verniplus()
     } 
     else  {
         yorn.innerHTML =`не е вярно${eval(task.innerHTML)}`
         input.value=''
+        verni.value=0
         newtask()
     }
 }
