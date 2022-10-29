@@ -1,11 +1,4 @@
 const fs = require('fs/promises');
-function srandom() {
-        let strg = '';
-        for (let index = 0; index < 22; index++) {
-            strg += Math.floor(Math.random() * 10)
-        }
-        return strg
-}
 class Filestore {
     constructor(file) {
         this.file = file
@@ -33,6 +26,5 @@ class Filestore {
     }
 }
 module.exports = {
-    Filestore,
-    srandom
+    Filestore
 }

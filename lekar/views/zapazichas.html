@@ -1,0 +1,20 @@
+<%- include('_header.html') %>
+    <div class="container">
+        <p> запази час за <%= day %>.<%= month %>.<%= year %> <%= chas %> </p>
+        <form action="/zapazichas" method="post">
+            <div class="mb-3 col-4">
+                <label for="ime" class="form-label">Име</label>
+                <input name="ime" type="text" class="form-control" id="ime">
+            </div>
+            <div class="mb-3 col-4">
+                <label for="typejiv" class="form-label">Вид на животното</label>
+                <input name="typejiv" type="text" class="form-control" id="typejiv">
+            </div>
+            <input name="day" type="hidden" value="<%= day %>">
+            <input name="month" type="hidden" value="<%= month %>">
+            <input name="year" type="hidden" value="<%= year %>">
+            <input name="chas" type="hidden" value="<%= chas %>">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+<%- include('_footer.html') %>

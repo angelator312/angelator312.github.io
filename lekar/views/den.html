@@ -1,7 +1,23 @@
 <%- include('_header.html') %>
-    <a href="">
-
-    </a>
+    <div class="container">
+        <div class="row justify-content-between">
+            <div class="col-4">
+                <a href="/<%= vchera.year %>/<%= vchera.month %>/<%= vchera.day %>">
+                    <%= vchera.day %>.<%= vchera.month %>.<%= vchera.year %>
+                </a>
+            </div>
+            <div class="col-4">
+                <span>
+                    <%= day %>.<%= month %>.<%= year %>
+                </span>
+            </div>
+            <div class="col-4">
+                <a href="/<%= utre.year %>/<%= utre.month %>/<%= utre.day %>">
+                    <%= utre.day %>.<%= utre.month %>.<%= utre.year %>
+                </a>
+            </div>
+        </div>
+    </div>
     <table class="table table-info">
         <tr>
             <th>
@@ -17,13 +33,13 @@
                     <%= key %>
                 </td>
                 <td>
-                    <% if (!chasove[key]) { %>
-                        <button class="btn btn-success">
+                    <% if (!chasove[key].ime) { %>
+                        <a class="btn btn-link" href="/zapazichas/<%= year %>/<%= month %>/<%= day %>/<%= key %>">
                             запази час
-                        </button>
+                        </a>
                         <% }else{ %>
-                            <%= chasove[key] %> 
-                            <% } %>
+                            <%= chasove[key].ime %>
+                                <% } %>
                 </td>
             </tr>
             <% } %>
