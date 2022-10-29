@@ -1,0 +1,21 @@
+<%- include('_header.html') %>
+  <h1>Gallery</h1>
+  <% for(let l in iList ){ %>
+    <div class="gallery">
+      <a target="_blank" href="<%= iList[l] %>">
+        <%= iList[l] %>
+      </a>
+    </div>
+    <% } %>
+      <% if(username) {%>
+        <p>Hello <%= username %>
+        </p>
+        <a href="logout">logout</a>
+        <% }else{ %>
+          <a href="login">login</a>
+          <% } %>
+            <a href="registyr">registry</a>
+            <a href="upload">uploadimage</a>
+            <a href="dregistyr">премахване на регистрацията</a>
+            <a href="search">search</a>
+            <%- include('_footer.html') %>
