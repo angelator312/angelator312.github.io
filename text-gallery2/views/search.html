@@ -1,0 +1,19 @@
+<%- include('_header.html') %>
+<form action="/search">
+    <div class="mb-3">
+      <label for="search" class="form-label">Search</label>
+      <input name="search" type="text" class="form-control" id="search" value="<%= search %>">
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+  <div>
+    regex: <pre><%= searchreg %></pre> 
+    <ul> 
+        <% for( let i of result ) { %>
+            <li><a target="_blank" href="/<%= i.file %>"><%= i.file %></a> <br>
+            <span>...<%= i.otriazyk1 %><strong><%= i.duma %></strong><%= i.otriazyk3 %>...</span>
+            </li>
+        <% } %>
+    </ul> 
+  </div>
+  <%- include('_footer.html') %>

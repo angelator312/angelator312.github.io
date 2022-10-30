@@ -1,0 +1,23 @@
+<%- include('_header.html') %>
+  <script>
+    function myFunction() {
+      var x = document.getElementById("myInput");
+      if (x.type === "password") {
+        x.type = "text";
+      } else {
+        x.type = "password";
+      }
+    }
+  </script>
+  <form action="/loginregister2">
+    <ul>
+      <li><input class="username" placeholder="username" name="username" type="text"></li>
+      <li><input type="password"  placeholder="password" id="myInput" class="password" name="password"> </li>
+      <li><input type="checkbox" onclick="myFunction()">Show Password</li>
+      <li><input type="submit" class="sibmit"></li>
+    </ul>
+    <div>
+      <%= yorn %>
+    </div>
+  </form>
+  <%- include('_footer.html') %>

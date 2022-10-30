@@ -1,0 +1,7 @@
+<%- include('_header.html') %>
+    <form id="uploadimage" enctype="multipart/form-data" action="/uploadimage" method="post">
+        <input type="file" name="myfile" /><br /><br />
+        <input type="submit" value="Upload Image" name="submit"><br /><br />
+        <span id="status"></span>
+    </form>
+<%- include('_footer.html') %>
