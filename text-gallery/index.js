@@ -47,19 +47,23 @@ async function sendFile(path, res) {
   }
 }
 async function searchfile(search) {
-  const list = await imageList()
   let result = []
+  if (!search) { return { result, searchreg: '' } }
+  const list = await imageList()
+  search = search.replace(/\s+/g, '\\s+')
   for (const item of list) {
     const file = await fs.readFile(`texts/${item}`)
     const rg = new RegExp(`${search}`, 'i')
-    const sr=file.toString().match(rg)
+    const sr = file.toString().match(rg)
     if (sr) {
-      let miasto=sr.index
-      let otriazyk=sr.input.substring(miasto-20,miasto+20)  
-      result.push({ sm: sr,miasto, file: item ,otriazyk,})
+      let miasto = sr.index
+      let duma = sr[0]
+      let otriazyk1 = sr.input.substring(miasto - 20, miasto)
+      let otriazyk3 = sr.input.substring(miasto + duma.length, miasto + duma.length + 20)
+      result.push({ sm: sr, miasto, file: item, otriazyk1, duma, otriazyk3 })
     }
   }
-  return result
+  return { result, searchreg: search }
 }
 app.engine('.html', require('ejs').__express);
 
@@ -166,14 +170,11 @@ app.get('/dregistyr', async function (req, res) {
 app.get('/search', async function (req, res) {
   let search = req.query.search
   let result;
-  if (search) {
-    result = await searchfile(search)
-  }else {
-    result=[]
-  }
+  let search2;
+  search2 = await searchfile(search)
   res.render('search', {
     search,
-    result,
+    ...search2,
   })
 });
 app.get('/:path?', function (req, res) {
