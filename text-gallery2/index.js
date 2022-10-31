@@ -24,15 +24,30 @@ const registry = new Filestore('registry.json');
 async function imageList() {
   return (await fs.readdir(`${process.cwd()}/texts`)).filter(t => t.endsWith('.txt'))
 }
-function translate1(string,up=false) {
+function translate1(string) {
     const azbuka={
       а:'a',б:`b`,'в':'v', 'г':'g', 'д':'d', 'е':'e',
       ж:'g',з:'z',и:'i',к:'k',л:'l',м:'m',н:'n',
       о:'o',п:'p',р:'r',с:'s',т:'t',у:'u',ф:'f'
-      ,х:'h',ц:'c',ч:'ch',ш:'sh',щ:'sht'
-
+      ,х:'h',ц:'c',ч:'ch',ш:'sh',щ:'sht',я:'ia',
+      А:'A',Б:`B`,В:'V', Г:'G', Д:'D', Е:'E',
+      Ж:'G',З:'Z',И:'I',К:'K',Л:'L',М:'M',Н:'N',
+      О:'O',П:'P',Р:'R',С:'S',Т:'T',У:'U',Ф:'F'
+      ,Х:'H',Ц:'C',Ч:'CH',Ш:'SH',Щ:'SHT',Я:'IA'
     }
-    return up ? azbuka[string].toUpperCase() : azbuka[string];
+    if (string==' ') {
+      return string
+    } else { 
+      return azbuka[string];
+    }
+}
+function translate(string) {
+  let astr = string.split('')
+  let result=[];
+  for (const e of astr) {
+    result.push(translate1(e))
+  }
+  return result.join('')
 }
 function proverka(file, cb) {
   fs.stat(`texts/${file.originalname}`).then(() => {
@@ -45,7 +60,8 @@ async function sendFile(path, res) {
   try {
     const data = await fs.readFile(`texts/${path}`)
     res.writeHead(200, { 'Content-Type': `text/plain; charset=utf-8` });
-    res.write(data);
+    const data2=translate(data.toString())
+    res.write(data2);
     return res.end();
   } catch (error) {
     res.writeHead(404, { 'Content-Type': `text/html; charset=utf-8` });
