@@ -21,7 +21,7 @@ const port = 8080
 const cookieage = 60000 * 30
 const session = new Filestore('session.json');
 const registry = new Filestore('registry.json');
-async function imageList() {
+async function textList() {
   return (await fs.readdir(`${process.cwd()}/texts`)).filter(t => t.endsWith('.txt'))
 }
 function translate1(string) {
@@ -29,14 +29,26 @@ function translate1(string) {
       а:'a',б:`b`,'в':'v', 'г':'g', 'д':'d', 'е':'e',
       ж:'g',з:'z',и:'i',к:'k',л:'l',м:'m',н:'n',
       о:'o',п:'p',р:'r',с:'s',т:'t',у:'u',ф:'f'
-      ,х:'h',ц:'c',ч:'ch',ш:'sh',щ:'sht',я:'ia',
+      ,х:'h',ц:'ts',ч:'ch',ш:'sh',щ:'sht',я:'ia',
       А:'A',Б:`B`,В:'V', Г:'G', Д:'D', Е:'E',
       Ж:'G',З:'Z',И:'I',К:'K',Л:'L',М:'M',Н:'N',
       О:'O',П:'P',Р:'R',С:'S',Т:'T',У:'U',Ф:'F'
-      ,Х:'H',Ц:'C',Ч:'CH',Ш:'SH',Щ:'SHT',Я:'IA'
+      ,Х:'H',Ц:'Ts',Ч:'CH',Ш:'SH',Щ:'Sht',Я:'Ya',
+      ъ:'a',й:'y'
     }
     if (string==' ') {
       return string
+    }else if (string=='.'){
+      return string+' '
+    }else if (string==','){
+      return string+' '
+    }else if (string==' '){
+      return string
+    }else if (string=='?'){
+      return string+' '
+    }else if (string=='\\'){
+      return '<br>'
+    
     } else { 
       return azbuka[string];
     }
@@ -73,7 +85,7 @@ async function sendFile(path, res) {
 async function searchfile(search) {
   let result = []
   if (!search) { return { result, searchreg: '' } }
-  const list = await imageList()
+  const list = await textList()
   search = search.replace(/\s+/g, '\\s+')
   for (const item of list) {
     const file = await fs.readFile(`texts/${item}`)
@@ -101,12 +113,12 @@ app.get('/', async function (req, res) {
   if (req.cookies.lognat) {
     const data = await session.getkey(req.cookies.lognat)
     res.render('index', {
-      iList: await imageList(),
+      iList: await textList(),
       username: data.username
     });
   } else {
     res.render('index', {
-      iList: await imageList(),
+      iList: await textList(),
       username: null
     })
   }
